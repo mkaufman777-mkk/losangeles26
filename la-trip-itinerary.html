@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,11 +11,11 @@
 <style>
   :root {
     --ink: #1B3A4B;
-    --paper: #FBF1DE;
-    --paper-dim: #F4E8CE;
-    --coral: #E5572E;
-    --marigold: #F0A73A;
-    --palm: #2C6B5D;
+    --paper: #FFF2D0;
+    --paper-dim: #F7E7B8;
+    --coral: #F7AE7E;
+    --palm: #4AADAA;
+    --turquoise: #4AADAA;
     --charcoal: #2A2621;
   }
 
@@ -104,6 +105,7 @@
   /* ---------- DAY CARD ---------- */
   .day {
     display: flex;
+    flex-direction: column;
     background: #fff;
     border: 2px solid var(--ink);
     border-radius: 10px;
@@ -113,40 +115,40 @@
   }
 
   .stub {
-    flex: 0 0 108px;
-    background: var(--ink);
+    background: var(--turquoise);
     color: var(--paper);
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 12px;
     position: relative;
-    padding: 20px 10px;
-    text-align: center;
+    padding: 16px 26px;
+    text-align: left;
   }
 
   .stub::after {
     content: "";
     position: absolute;
-    top: 0;
-    right: -1px;
-    bottom: 0;
-    width: 0;
-    border-right: 2px dashed rgba(251,241,222,0.45);
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 0;
+    border-bottom: 2px dashed rgba(251,241,222,0.45);
   }
 
   .stub .daynum {
     font-family: 'Anton', sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--marigold);
-    margin-bottom: 6px;
+    color: var(--paper);
+    margin-bottom: 0;
   }
 
   .stub .dayword {
     font-family: 'Anton', sans-serif;
-    font-size: 40px;
+    font-size: 30px;
     line-height: 1;
   }
 
@@ -221,7 +223,7 @@
   .tz-divider .tz-line {
     flex: 1;
     height: 1px;
-    background: var(--marigold);
+    background: var(--coral);
   }
 
   .tz-divider span.tz-label {
@@ -253,20 +255,8 @@
   }
 
   @media (max-width: 560px) {
-    .day { flex-direction: column; }
-    .stub {
-      flex-direction: row;
-      gap: 10px;
-      padding: 12px 16px;
-      justify-content: flex-start;
-    }
-    .stub::after {
-      border-right: none;
-      right: 0; left: 0; bottom: -1px; top: auto;
-      border-bottom: 2px dashed rgba(251,241,222,0.45);
-    }
-    .stub .dayword { font-size: 26px; }
-    .stub .daynum { margin-bottom: 0; }
+    .stub { padding: 12px 16px; }
+    .stub .dayword { font-size: 24px; }
     .entry { flex-direction: column; gap: 2px; }
     .entry .time { flex: none; }
   }
