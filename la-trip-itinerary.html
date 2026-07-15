@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Los Angeles Family Trip Itinerary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Libre+Franklin:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1B3A4B;
+    --paper: #FBF1DE;
+    --paper-dim: #F4E8CE;
+    --coral: #E5572E;
+    --marigold: #F0A73A;
+    --palm: #2C6B5D;
+    --charcoal: #2A2621;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(27,58,75,0.06) 1px, transparent 0);
+    background-size: 22px 22px;
+    color: var(--charcoal);
+    font-family: 'Libre Franklin', sans-serif;
+    line-height: 1.55;
+  }
+
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    padding: 64px 0 36px;
+    text-align: center;
+    border-bottom: 3px solid var(--ink);
+    margin-bottom: 44px;
+  }
+
+  .eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--palm);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+
+  h1.title {
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    font-size: clamp(40px, 8vw, 68px);
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    margin: 0 0 6px;
+    line-height: 0.95;
+  }
+
+  .title .accent { color: var(--coral); }
+
+  .subtitle {
+    font-family: 'Caveat', cursive;
+    font-size: 26px;
+    color: var(--charcoal);
+    margin: 0 0 30px;
+  }
+
+  .route {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .route .code {
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+  }
+
+  .route .line {
+    flex: 1;
+    height: 2px;
+    background-image: linear-gradient(to right, var(--ink) 60%, transparent 0%);
+    background-size: 10px 2px;
+    background-repeat: repeat-x;
+    position: relative;
+  }
+
+  .route svg { flex-shrink: 0; }
+
+  /* ---------- DAY CARD ---------- */
+  .day {
+    display: flex;
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    margin-bottom: 34px;
+    overflow: hidden;
+    box-shadow: 6px 6px 0 rgba(27,58,75,0.12);
+  }
+
+  .stub {
+    flex: 0 0 108px;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 20px 10px;
+    text-align: center;
+  }
+
+  .stub::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -1px;
+    bottom: 0;
+    width: 0;
+    border-right: 2px dashed rgba(251,241,222,0.45);
+  }
+
+  .stub .daynum {
+    font-family: 'Anton', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--marigold);
+    margin-bottom: 6px;
+  }
+
+  .stub .dayword {
+    font-family: 'Anton', sans-serif;
+    font-size: 40px;
+    line-height: 1;
+  }
+
+  .day-body {
+    flex: 1;
+    padding: 22px 26px 20px;
+  }
+
+  .day-title {
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: 21px;
+    letter-spacing: 0.01em;
+    color: var(--coral);
+    margin: 0 0 16px;
+  }
+
+  .entry {
+    display: flex;
+    gap: 16px;
+    padding: 10px 0;
+    border-top: 1px dashed rgba(27,58,75,0.18);
+  }
+
+  .entry:first-of-type { border-top: none; padding-top: 0; }
+
+  .entry .time {
+    flex: 0 0 80px;
+    font-weight: 700;
+    font-size: 13.5px;
+    color: var(--palm);
+    padding-top: 1px;
+    letter-spacing: 0.01em;
+  }
+
+  .entry .detail {
+    flex: 1;
+    font-size: 15px;
+  }
+
+  .entry .detail a {
+    color: var(--coral);
+    text-decoration: none;
+    border-bottom: 1.5px solid rgba(229,87,46,0.4);
+    font-weight: 600;
+  }
+
+  .entry .detail a:hover { border-bottom-color: var(--coral); }
+
+  .note {
+    font-family: 'Caveat', cursive;
+    font-size: 18px;
+    color: var(--palm);
+  }
+
+  .entry.aside .detail {
+    font-family: 'Caveat', cursive;
+    font-size: 19px;
+    color: var(--palm);
+    line-height: 1.4;
+  }
+
+  .tz-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 4px 0 6px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(27,58,75,0.18);
+  }
+
+  .tz-divider .tz-line {
+    flex: 1;
+    height: 1px;
+    background: var(--marigold);
+  }
+
+  .tz-divider span.tz-label {
+    font-family: 'Anton', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--coral);
+    white-space: nowrap;
+  }
+
+  /* ---------- FOOTER ---------- */
+  .footer {
+    text-align: center;
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 3px solid var(--ink);
+  }
+
+  .footer .sunburst {
+    margin: 0 auto 14px;
+  }
+
+  .footer p {
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  @media (max-width: 560px) {
+    .day { flex-direction: column; }
+    .stub {
+      flex-direction: row;
+      gap: 10px;
+      padding: 12px 16px;
+      justify-content: flex-start;
+    }
+    .stub::after {
+      border-right: none;
+      right: 0; left: 0; bottom: -1px; top: auto;
+      border-bottom: 2px dashed rgba(251,241,222,0.45);
+    }
+    .stub .dayword { font-size: 26px; }
+    .stub .daynum { margin-bottom: 0; }
+    .entry { flex-direction: column; gap: 2px; }
+    .entry .time { flex: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Family trip &middot; 5 nights, 6 days</div>
+    <h1 class="title">Los Angeles<br><span class="accent">Itinerary</span></h1>
+    <p class="subtitle">Hollywood &rarr; Beverly Hills &rarr; Burbank &rarr; Santa Monica</p>
+    <div class="route">
+      <span class="code">JFK</span>
+      <span class="line"></span>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1B3A4B" stroke-width="1.6"><path d="M2 16l7-2 5.5-8.5c.4-.6 1.3-.6 1.6.1.4.9.2 2-.5 2.6L11 13l6 1 2 2-9 1-3 3-1-1 1.5-2.5L2 16z"/></svg>
+      <span class="line"></span>
+      <span class="code">LAX</span>
+    </div>
+  </div>
+
+  <!-- DAY 1 -->
+  <div class="day">
+    <div class="stub">
+      <div class="daynum">Day 1</div>
+      <div class="dayword">Tue</div>
+    </div>
+    <div class="day-body">
+      <p class="day-title">Arrival day</p>
+      <div class="entry"><div class="time">5:30 AM</div><div class="detail">Leave for JFK</div></div>
+      <div class="entry"><div class="time">6:30 AM</div><div class="detail">Check in bags for flight</div></div>
+      <div class="entry aside"><div class="time"></div><div class="detail">Note: our lunch will happen while on the flight. Consider packing food, getting something from the terminal, or ordering from JetBlue's <a href="https://www.jetblue.com/flying-with-us/inflight-experience/snacks-drinks" target="_blank" rel="noopener">EatUp Cafe</a> menu.</div></div>
+      <div class="entry"><div class="time">8:25 AM</div><div class="detail">B6 323 flight departs for LAX</div></div>
+      <div class="tz-divider"><span class="tz-label">Now in Pacific Time</span><span class="tz-line"></span></div>
+      <div class="entry"><div class="time">11:23 AM</div><div class="detail">Arrive at LAX &mdash; get bags, then take the green shuttle to the LAX-it lot to meet Uber driver</div></div>
+      <div class="entry"><div class="time">1:30 PM</div><div class="detail">Take an Uber to Santa Monica Avis car rental</div></div>
+      <div class="entry"><div class="time">2:10 PM</div><div class="detail">Rent car and drive to hotel<br><span class="note">The ride from Santa Monica to the hotel could take a while &mdash; consider a scenic route or stopping for food</span></div></div>
+      <div class="entry"><div class="time">3:30 PM</div><div class="detail">Park at Ovation Hollywood SP garage</div></div>
+      <div class="entry"><div class="time">4:00 PM</div><div class="detail">Check into the Loews Hollywood Hotel</div></div>
+      <div class="entry"><div class="time">5:00 PM</div><div class="detail">Explore <a href="https://www.ovationhollywood.com/" target="_blank" rel="noopener">Ovation Hollywood</a> / <a href="https://maps.app.goo.gl/5j85Qaij9BKeZTEN7" target="_blank" rel="noopener">Hollywood Walk of Fame</a></div></div>
+    </div>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="day">
+    <div class="stub">
+      <div class="daynum">Day 2</div>
+      <div class="dayword">Wed</div>
+    </div>
+    <div class="day-body">
+      <p class="day-title">Beverly Hills &amp; Sunset Strip</p>
+      <div class="entry"><div class="time">10:30 AM</div><div class="detail"><a href="https://paramountstudiotour.ventrata.site/en/studio-tour" target="_blank" rel="noopener">Paramount Studio Tour</a> (Hollywood) &mdash; $71/person</div></div>
+      <div class="entry"><div class="time">12:45 PM</div><div class="detail">Lunch in Hollywood</div></div>
+      <div class="entry"><div class="time">4:00 PM</div><div class="detail"><a href="https://lovebeverlyhills.com/things-to-do/view/beverly-gardens-park" target="_blank" rel="noopener">Beverly Hills sightseeing</a> &amp; <a href="https://maps.app.goo.gl/Kq3izEXMB5G26sXH8" target="_blank" rel="noopener">Rodeo Drive</a></div></div>
+      <div class="entry"><div class="time">5:30 PM</div><div class="detail"><a href="https://www.rainbowbarandgrill.com/about/" target="_blank" rel="noopener">Rainbow Bar and Grill</a> on <a href="https://maps.app.goo.gl/pTGYJCyJPpQEeguF8" target="_blank" rel="noopener">Sunset Strip</a><br><span class="note">Make a dinner reservation</span></div></div>
+      <div class="entry"><div class="time">7:00 PM</div><div class="detail">Explore Sunset Strip / <a href="https://whiskyagogo.com/calendar/" target="_blank" rel="noopener">Whisky a Go Go</a> / <a href="https://www.theroxy.com/" target="_blank" rel="noopener">Roxy Theater</a> (3 min walk)</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="day">
+    <div class="stub">
+      <div class="daynum">Day 3</div>
+      <div class="dayword">Thu</div>
+    </div>
+    <div class="day-body">
+      <p class="day-title">Amusement park</p>
+      <div class="entry"><div class="time">8:00 AM</div><div class="detail">Amusement park</div></div>
+      <div class="entry"><div class="time">8:00 PM</div><div class="detail">Head back to Loews Hotel</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 4 -->
+  <div class="day">
+    <div class="stub">
+      <div class="daynum">Day 4</div>
+      <div class="dayword">Fri</div>
+    </div>
+    <div class="day-body">
+      <p class="day-title">Hollywood sign &amp; Warner Bros.</p>
+      <div class="entry"><div class="time">10:00 AM</div><div class="detail"><a href="https://hollywoodsign.us/" target="_blank" rel="noopener">Lake Hollywood Park</a> &mdash; view of the Hollywood Sign</div></div>
+      <div class="entry"><div class="time">2:00 PM</div><div class="detail"><a href="https://www.wbstudiotour.com/tour/studio/" target="_blank" rel="noopener">Warner Bros. Studio Tour</a> (Burbank) &mdash; $79/person</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 5 -->
+  <div class="day">
+    <div class="stub">
+      <div class="daynum">Day 5</div>
+      <div class="dayword">Sat</div>
+    </div>
+    <div class="day-body">
+      <p class="day-title">Switch hotels &mdash; Santa Monica</p>
+      <div class="entry"><div class="time">9:00 AM</div><div class="detail">Check out of Loews Hollywood Hotel</div></div>
+      <div class="entry"><div class="time">9:45 AM</div><div class="detail">Leave bags with bellhop at Santa Monica Courtyard Marriott<br><span class="note">Tip $4&ndash;$8</span></div></div>
+      <div class="entry"><div class="time">10:00 AM</div><div class="detail">Return car to Avis</div></div>
+      <div class="entry"><div class="time">10:35 AM</div><div class="detail"><a href="https://pacpark.com/" target="_blank" rel="noopener">Beach</a></div></div>
+      <div class="entry"><div class="time">4:00 PM</div><div class="detail">Return to hotel to clean up for dinner</div></div>
+      <div class="entry"><div class="time">5:30 PM</div><div class="detail">Dinner in Santa Monica</div></div>
+      <div class="entry"><div class="time">7:00 PM</div><div class="detail"><a href="https://pacpark.com/" target="_blank" rel="noopener">Pacific Park at Santa Monica</a><br><span class="note">Closes at 11 PM</span></div></div>
+    </div>
+  </div>
+
+  <!-- DAY 6 -->
+  <div class="day">
+    <div class="stub">
+      <div class="daynum">Day 6</div>
+      <div class="dayword">Sun</div>
+    </div>
+    <div class="day-body">
+      <p class="day-title">Return home</p>
+      <div class="entry"><div class="time">9:00 AM</div><div class="detail">Last-minute exploring? Have a big breakfast?</div></div>
+      <div class="entry"><div class="time">11:30 AM</div><div class="detail">Checkout of the Courtyard Marriott in Santa Monica</div></div>
+      <div class="entry"><div class="time">12:00 PM</div><div class="detail">Take Uber to LAX</div></div>
+      <div class="entry"><div class="time">1:00 PM</div><div class="detail">Check in for flight</div></div>
+      <div class="entry"><div class="time">3:20 PM</div><div class="detail">Flight departs for JFK</div></div>
+      <div class="entry aside"><div class="time"></div><div class="detail">Note: our dinner will happen while on the flight. Consider getting something from the terminal or ordering from JetBlue's <a href="https://www.jetblue.com/flying-with-us/inflight-experience/snacks-drinks" target="_blank" rel="noopener">EatUp Cafe</a> menu.</div></div>
+      <div class="entry"><div class="time">12:59 AM</div><div class="detail">Arrive at JFK</div></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <svg class="sunburst" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#F0A73A" stroke-width="1.8"><circle cx="12" cy="12" r="4.5"/><g stroke-linecap="round"><path d="M12 1v3"/><path d="M12 20v3"/><path d="M23 12h-3"/><path d="M4 12H1"/><path d="M20.1 3.9l-2.1 2.1"/><path d="M6 18l-2.1 2.1"/><path d="M20.1 20.1L18 18"/><path d="M6 6 3.9 3.9"/></g></svg>
+    <p>Have a great trip!</p>
+  </div>
+
+</div>
+</body>
+</html>
