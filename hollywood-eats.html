@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hollywood Eats — Loews Hollywood Trip Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --asphalt: #1c1b1a;
+    --asphalt-2: #262422;
+    --terrazzo: #302d2a;
+    --brass: #c9a227;
+    --brass-bright: #e8c655;
+    --cream: #f3ede1;
+    --cream-dim: #c9c0ab;
+    --marquee-red: #b5202a;
+    --line: rgba(201,162,39,0.25);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at top, rgba(201,162,39,0.06), transparent 60%),
+      var(--asphalt);
+    color:var(--cream);
+    font-family:'Work Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:inherit; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    padding:5rem 1.5rem 3rem;
+    text-align:center;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0 2px, transparent 2px 46px);
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(180deg, transparent 60%, var(--asphalt) 100%),
+      repeating-radial-gradient(circle at 50% 120%, rgba(201,162,39,0.08) 0 2px, transparent 2px 40px);
+    pointer-events:none;
+  }
+  .hero-star{
+    width:54px; height:54px;
+    margin:0 auto 1.4rem;
+    color:var(--brass);
+    filter:drop-shadow(0 0 14px rgba(201,162,39,0.45));
+    position:relative;
+  }
+  .eyebrow{
+    letter-spacing:0.35em;
+    text-transform:uppercase;
+    font-size:0.7rem;
+    color:var(--brass);
+    margin:0 0 1rem;
+    position:relative;
+  }
+  h1{
+    font-family:'Cinzel', serif;
+    font-weight:700;
+    font-size:clamp(2.1rem, 5.5vw, 3.6rem);
+    margin:0 0 0.6rem;
+    letter-spacing:0.02em;
+    color:var(--cream);
+    text-shadow:0 2px 24px rgba(0,0,0,0.4);
+    position:relative;
+  }
+  .hero p.sub{
+    font-size:1.02rem;
+    color:var(--cream-dim);
+    max-width:560px;
+    margin:0 auto;
+    line-height:1.6;
+    position:relative;
+  }
+  .hero .addr{
+    margin-top:1.6rem;
+    font-size:0.85rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--brass-bright);
+    position:relative;
+  }
+
+  /* ---------- Filter bar ---------- */
+  .filters{
+    position:sticky;
+    top:0;
+    z-index:20;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:0.6rem;
+    background:rgba(28,27,26,0.94);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding:0.9rem 1rem;
+  }
+  .filter-btn{
+    appearance:none;
+    border:1px solid var(--line);
+    background:transparent;
+    color:var(--cream-dim);
+    font-family:'Cinzel', serif;
+    font-size:0.82rem;
+    letter-spacing:0.05em;
+    padding:0.5rem 1.1rem;
+    border-radius:999px;
+    cursor:pointer;
+    transition:all 0.2s ease;
+  }
+  .filter-btn:hover{ color:var(--cream); border-color:var(--brass); }
+  .filter-btn.active{
+    background:var(--brass);
+    border-color:var(--brass);
+    color:var(--asphalt);
+    font-weight:600;
+  }
+  .filter-count{
+    text-align:center;
+    font-size:0.8rem;
+    color:var(--cream-dim);
+    padding:1rem 1.5rem 0;
+    letter-spacing:0.03em;
+  }
+
+  /* ---------- List ---------- */
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:1.5rem 1.5rem 5rem;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+    gap:1.1rem;
+  }
+
+  /* ---------- Card / plaque ---------- */
+  .card{
+    background:linear-gradient(160deg, var(--terrazzo), var(--asphalt-2));
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:1.3rem 1.4rem 1.2rem;
+    position:relative;
+    transition:transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  }
+  .card:hover{
+    transform:translateY(-3px);
+    border-color:rgba(201,162,39,0.55);
+    box-shadow:0 10px 26px rgba(0,0,0,0.35);
+  }
+  .card.hidden{ display:none; }
+  .rank{
+    position:absolute;
+    top:-14px; left:1.2rem;
+    width:34px; height:34px;
+    background:var(--brass);
+    color:var(--asphalt);
+    font-family:'Cinzel', serif;
+    font-weight:700;
+    font-size:0.8rem;
+    display:flex; align-items:center; justify-content:center;
+    clip-path:polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+  .meal-pills{
+    display:flex;
+    gap:0.35rem;
+    justify-content:flex-end;
+    margin-bottom:0.3rem;
+  }
+  .pill{
+    font-family:'Cinzel', serif;
+    font-size:0.65rem;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    padding:0.15rem 0.5rem;
+    border-radius:999px;
+    border:1px solid var(--line);
+    color:var(--cream-dim);
+  }
+  .pill.on{
+    color:var(--asphalt);
+    background:var(--brass-bright);
+    border-color:var(--brass-bright);
+    font-weight:600;
+  }
+  .card h3{
+    font-family:'Cinzel', serif;
+    font-size:1.12rem;
+    margin:0.6rem 0 0.35rem;
+    color:var(--cream);
+    line-height:1.3;
+  }
+  .card .desc{
+    font-size:0.85rem;
+    color:var(--cream-dim);
+    margin:0 0 0.85rem;
+    line-height:1.45;
+    min-height:2.5em;
+  }
+  .meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.5rem 1rem;
+    font-size:0.78rem;
+    color:var(--cream-dim);
+    margin-bottom:0.7rem;
+  }
+  .parking{
+    font-size:0.78rem;
+    color:var(--cream-dim);
+    border-top:1px dashed var(--line);
+    padding-top:0.6rem;
+    margin-bottom:0.9rem;
+    line-height:1.4;
+  }
+  .parking b{ color:var(--brass-bright); font-weight:600; }
+  .link-row{ display:flex; gap:0.5rem; }
+  .card a.link{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:0.4rem;
+    flex:1;
+    font-size:0.78rem;
+    font-weight:600;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--asphalt);
+    background:var(--brass-bright);
+    padding:0.5rem 0.9rem;
+    border-radius:3px;
+    text-decoration:none;
+    transition:background 0.2s ease;
+  }
+  .card a.link:hover{ background:var(--marquee-red); color:var(--cream); }
+  .card a.link.menu-link{
+    background:transparent;
+    border:1px solid var(--brass);
+    color:var(--brass-bright);
+  }
+  .card a.link.menu-link:hover{
+    background:var(--brass);
+    color:var(--asphalt);
+    border-color:var(--brass);
+  }
+
+  footer{
+    text-align:center;
+    padding:2.5rem 1.5rem 3.5rem;
+    color:var(--cream-dim);
+    font-size:0.8rem;
+    border-top:1px solid var(--line);
+  }
+  footer .marquee-note{
+    font-family:'Cinzel', serif;
+    color:var(--brass);
+    font-size:0.95rem;
+    margin-bottom:0.5rem;
+    letter-spacing:0.04em;
+  }
+
+  @media (max-width:560px){
+    .hero{ padding:3.5rem 1.2rem 2.2rem; }
+    .filter-btn{ padding:0.45rem 0.9rem; font-size:0.78rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <svg class="hero-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8l3.2 7.2 7.8.7-5.9 5.2 1.8 7.7L12 17.6l-6.9 4 1.8-7.7L1 8.7l7.8-.7L12 .8z"/></svg>
+  <p class="eyebrow">Loews Hollywood Hotel &middot; 4 Nights</p>
+  <h1>Hollywood Eats</h1>
+  <p class="sub">Every casual, no-fuss restaurant near the hotel, ranked by distance — filter by meal to see who serves what.</p>
+  <p class="addr">1755 N Highland Ave, Los Angeles, CA 90028</p>
+</header>
+
+<nav class="filters">
+  <button class="filter-btn active" data-filter="all">All 26</button>
+  <button class="filter-btn" data-filter="B">Breakfast</button>
+  <button class="filter-btn" data-filter="L">Lunch</button>
+  <button class="filter-btn" data-filter="D">Dinner</button>
+</nav>
+
+<div class="wrap">
+  <div class="grid" id="grid">
+
+    <div class="card" data-meals="B D">
+      <div class="rank">01</div>
+      <div class="meal-pills">
+        <span class="pill on">B</span><span class="pill">L</span><span class="pill on">D</span>
+      </div>
+      <h3>Mel's Drive-In Hollywood</h3>
+      <p class="desc">Classic 24-hour-feel American diner, kid-friendly menu, milkshakes. Open till 11pm–midnight.</p>
+      <div class="meta-row"><span>🚶 1 min</span><span>🚗 3 min</span><span>0.05 mi</span></div>
+      <div class="parking"><b>Parking:</b> No dedicated lot; Ovation garage across the street.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJiTG9iyO_woARi7H1WMDiKZE" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://melsdrive-in.com/restaurant/mels-hollywood/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="L D">
+      <div class="rank">02</div>
+      <div class="meal-pills">
+        <span class="pill">B</span><span class="pill on">L</span><span class="pill on">D</span>
+      </div>
+      <h3>La Popular Hollywood</h3>
+      <p class="desc">Mexican, patio seating with a Hollywood Sign view, two daily happy hours.</p>
+      <div class="meta-row"><span>🚶 2 min</span><span>🚗 3 min</span><span>0.08 mi</span></div>
+      <div class="parking"><b>Parking:</b> Ovation garage, they validate.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJqf7sLHO_woARZZMRJX9uk4w" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://www.lapopularcdmx.com/locations/hollywood" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="L">
+      <div class="rank">03</div>
+      <div class="meal-pills">
+        <span class="pill">B</span><span class="pill on">L</span><span class="pill">D</span>
+      </div>
+      <h3>Seasoning Alley Hollywood</h3>
+      <p class="desc">Quick, fresh Mediterranean — hummus, shawarma, quiet counter inside Ovation.</p>
+      <div class="meta-row"><span>🚶 2 min</span><span>🚗 3 min</span><span>0.09 mi</span></div>
+      <div class="parking"><b>Parking:</b> Ovation garage.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJ9ZHMp6-_woAR98TltP3OpHs" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://seasoningalley.com/menu-hollywood/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="L D">
+      <div class="rank">04</div>
+      <div class="meal-pills">
+        <span class="pill">B</span><span class="pill on">L</span><span class="pill on">D</span>
+      </div>
+      <h3>Hard Rock Cafe</h3>
+      <p class="desc">Reliable American menu, rock memorabilia to browse while you wait.</p>
+      <div class="meta-row"><span>🚶 2 min</span><span>🚗 3 min</span><span>0.09 mi</span></div>
+      <div class="parking"><b>Parking:</b> Ovation garage.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJP2u7wyO_woARHJ6ymkkeqfE" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://cafe.hardrock.com/hollywood-on-hollywood-blvd/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="L">
+      <div class="rank">05</div>
+      <div class="meal-pills">
+        <span class="pill">B</span><span class="pill on">L</span><span class="pill">D</span>
+      </div>
+      <h3>In-N-Out Burger</h3>
+      <p class="desc">The California classic. Expect a line, but it moves fast.</p>
+      <div class="meta-row"><span>🚶 6 min</span><span>🚗 4 min</span><span>0.29 mi</span></div>
+      <div class="parking"><b>Parking:</b> Small on-site lot, fills up at peak times.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJDaqRkya_woARN85cYzM3cbA" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://www.in-n-out.com/menu" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="B">
+      <div class="rank">06</div>
+      <div class="meal-pills">
+        <span class="pill on">B</span><span class="pill">L</span><span class="pill">D</span>
+      </div>
+      <h3>Tiago Coffee Bar + Kitchen</h3>
+      <p class="desc">Relaxed coffee shop, breakfast sandwiches, outdoor patio seating.</p>
+      <div class="meta-row"><span>🚶 7 min</span><span>🚗 4 min</span><span>0.33 mi</span></div>
+      <div class="parking"><b>Parking:</b> Street parking only.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJMSsl8iC_woARlQiLTZEci9o" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://www.tiagocoffee.com/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="D">
+      <div class="rank">07</div>
+      <div class="meal-pills">
+        <span class="pill">B</span><span class="pill">L</span><span class="pill on">D</span>
+      </div>
+      <h3>Bossa Nova Brazilian Cuisine</h3>
+      <p class="desc">Brazilian comfort food, open very late, generous portions.</p>
+      <div class="meta-row"><span>🚶 10 min</span><span>🚗 5 min</span><span>0.50 mi</span></div>
+      <div class="parking"><b>Parking:</b> Street.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJJ0YDr9i-woAROWZwJTnbiX0" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://www.bossafood.com/menu" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="D">
+      <div class="rank">08</div>
+      <div class="meal-pills">
+        <span class="pill">B</span><span class="pill">L</span><span class="pill on">D</span>
+      </div>
+      <h3>Running Goose</h3>
+      <p class="desc">South American small plates, cozy patio, family-friendly.</p>
+      <div class="meta-row"><span>🚶 11 min</span><span>🚗 5 min</span><span>0.55 mi</span></div>
+      <div class="parking"><b>Parking:</b> Street.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJnUsXzTu_woARN-58bPlbMk4" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://runningoose.com/dinner/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="L">
+      <div class="rank">09</div>
+      <div class="meal-pills">
+        <span class="pill">B</span><span class="pill on">L</span><span class="pill">D</span>
+      </div>
+      <h3>Popeyes Louisiana Kitchen</h3>
+      <p class="desc">Fast-food fried chicken, open late.</p>
+      <div class="meta-row"><span>🚶 11 min</span><span>🚗 5 min</span><span>0.55 mi</span></div>
+      <div class="parking"><b>Parking:</b> Street — congested near closing time.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJZW5K3Tu_woARe1twEMasZsQ" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://www.popeyes.com/menu" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="D">
+      <div class="rank">10</div>
+      <div class="meal-pills">
+        <span class="pill">B</span><span class="pill">L</span><span class="pill on">D</span>
+      </div>
+      <h3>Elbow Room</h3>
+      <p class="desc">Neighborhood pizza-and-beer joint, casual, plenty of tables.</p>
+      <div class="meta-row"><span>🚶 11 min</span><span>🚗 5 min</span><span>0.55 mi</span></div>
+      <div class="parking"><b>Parking:</b> Street.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJjbZu0Du_woARo6-7P6cIQ1M" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://www.elbowroomla.com/food-menu/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="D">
+      <div class="rank">11</div>
+      <div class="meal-pills">
+        <span class="pill">B</span><span class="pill">L</span><span class="pill on">D</span>
+      </div>
+      <h3>Tribute Hollywood</h3>
+      <p class="desc">Casual bar with good happy hour and bar food.</p>
+      <div class="meta-row"><span>🚶 11 min</span><span>🚗 5 min</span><span>0.56 mi</span></div>
+      <div class="parking"><b>Parking:</b> Street meters or nearby structures.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJ1cWo-z2_woARNF2wrig5QYU" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://tributehollywood.com/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="L D">
+      <div class="rank">12</div>
+      <div class="meal-pills">
+        <span class="pill">B</span><span class="pill on">L</span><span class="pill on">D</span>
+      </div>
+      <h3>ROMANACCIA</h3>
+      <p class="desc">Roman-style pizza by the slice, tiny spot, great lunch special, open till midnight weekends.</p>
+      <div class="meta-row"><span>🚶 12 min</span><span>🚗 5 min</span><span>0.58 mi</span></div>
+      <div class="parking"><b>Parking:</b> Street only, can be tough — grab a meter if you see one.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJsxXHz2m_woARZYZbLfBh2Fc" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://romanaccia.com/menu/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="D">
+      <div class="rank">13</div>
+      <div class="meal-pills">
+        <span class="pill">B</span><span class="pill">L</span><span class="pill on">D</span>
+      </div>
+      <h3>Jemma Hollywood</h3>
+      <p class="desc">Casual Italian — rigatoni, meatballs, good for a relaxed dinner. Busy before Pantages shows.</p>
+      <div class="meta-row"><span>🚶 14 min</span><span>🚗 6 min</span><span>0.69 mi</span></div>
+      <div class="parking"><b>Parking:</b> Street.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJDTXu-Xy_woARP5Ajw5j57yk" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://jemmarestaurants.com/hollywood" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="B L D">
+      <div class="rank">14</div>
+      <div class="meal-pills">
+        <span class="pill on">B</span><span class="pill on">L</span><span class="pill on">D</span>
+      </div>
+      <h3>Hollywood Burger & Sandwich Co.</h3>
+      <p class="desc">Kiosk ordering, near the theaters, does breakfast, lunch, and dinner all day.</p>
+      <div class="meta-row"><span>🚶 15 min</span><span>🚗 6 min</span><span>0.74 mi</span></div>
+      <div class="parking"><b>Parking:</b> No lot; street parking.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJuyOoqzm_woARsYmUbiy2M-8" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://www.hollywood-burger.com/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="D">
+      <div class="rank">15</div>
+      <div class="meal-pills">
+        <span class="pill">B</span><span class="pill">L</span><span class="pill on">D</span>
+      </div>
+      <h3>El Compadre</h3>
+      <p class="desc">Old-school Mexican, red booths, classic cantina feel.</p>
+      <div class="meta-row"><span>🚶 16 min</span><span>🚗 6 min</span><span>0.81 mi</span></div>
+      <div class="parking"><b>Parking:</b> Street.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJRSMYHdy-woAR_LzUCnKpp2w" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://elcompadrerestaurant.com/home" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="L">
+      <div class="rank">16</div>
+      <div class="meal-pills">
+        <span class="pill">B</span><span class="pill on">L</span><span class="pill">D</span>
+      </div>
+      <h3>Chicken Guy!</h3>
+      <p class="desc">Guy Fieri's chicken tenders and sandwiches, tons of sauce options.</p>
+      <div class="meta-row"><span>🚶 17 min</span><span>🚗 6 min</span><span>0.83 mi</span></div>
+      <div class="parking"><b>Parking:</b> Ovation garage.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJh2m0IgC_woARdcqYmucUD1E" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://chickenguy.com/menu/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="B">
+      <div class="rank">17</div>
+      <div class="meal-pills">
+        <span class="pill on">B</span><span class="pill">L</span><span class="pill">D</span>
+      </div>
+      <h3>Eat This Café</h3>
+      <p class="desc">Casual brunch/lunch counter, bottomless mimosas, dog-friendly patio.</p>
+      <div class="meta-row"><span>🚶 17 min</span><span>🚗 6 min</span><span>0.84 mi</span></div>
+      <div class="parking"><b>Parking:</b> Street (metered + free residential nearby).</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJh_PYOTK_woAR0LMGbZguTfM" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://eatthiscafe.com/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="B">
+      <div class="rank">18</div>
+      <div class="meal-pills">
+        <span class="pill on">B</span><span class="pill">L</span><span class="pill">D</span>
+      </div>
+      <h3>West Hollywood Breakfast Company</h3>
+      <p class="desc">Bright, pink-themed brunch spot with a big savory-and-sweet menu.</p>
+      <div class="meta-row"><span>🚶 17 min</span><span>🚗 6 min</span><span>0.85 mi</span></div>
+      <div class="parking"><b>Parking:</b> Garage, 60 min free with validation.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJ4zpBvNG_woARIgwNeT-meBk" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://breakfast-company.com/west-hollywood/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="L">
+      <div class="rank">19</div>
+      <div class="meal-pills">
+        <span class="pill">B</span><span class="pill on">L</span><span class="pill">D</span>
+      </div>
+      <h3>Shake Shack</h3>
+      <p class="desc">Burgers, shakes, crinkle fries — inside the Ovation complex.</p>
+      <div class="meta-row"><span>🚶 17 min</span><span>🚗 6 min</span><span>0.85 mi</span></div>
+      <div class="parking"><b>Parking:</b> Ovation garage.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJNyHk7zi_woARcD3vQ_W-mfg" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://shakeshack.com/location/hollywood-6201-hollywood-gower-ca" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="B">
+      <div class="rank">20</div>
+      <div class="meal-pills">
+        <span class="pill on">B</span><span class="pill">L</span><span class="pill">D</span>
+      </div>
+      <h3>Duke's Cafe</h3>
+      <p class="desc">Tucked-away sandwich counter with big portions. Weekdays only (closed Sat/Sun).</p>
+      <div class="meta-row"><span>🚶 23 min</span><span>🚗 8 min</span><span>1.13 mi</span></div>
+      <div class="parking"><b>Parking:</b> On-site lot (attached production lot).</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJZ-cAZCi_woARvj5wiy3fp8o" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://dukescafe.square.site/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="B L">
+      <div class="rank">21</div>
+      <div class="meal-pills">
+        <span class="pill on">B</span><span class="pill on">L</span><span class="pill">D</span>
+      </div>
+      <h3>Original Tommy's World Famous Hamburgers</h3>
+      <p class="desc">Open from 7am — order the chili on anything. Fast-food counter service.</p>
+      <div class="meta-row"><span>🚶 24 min</span><span>🚗 8 min</span><span>1.21 mi</span></div>
+      <div class="parking"><b>Parking:</b> Small lot / street.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJ0fivcka_woARPZEj4POFHG0" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://originaltommys.com/home-new-menu/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="B">
+      <div class="rank">22</div>
+      <div class="meal-pills">
+        <span class="pill on">B</span><span class="pill">L</span><span class="pill">D</span>
+      </div>
+      <h3>The Griddle Cafe</h3>
+      <p class="desc">Plate-sized pancakes, lively diner vibe. Closed Mon/Tue.</p>
+      <div class="meta-row"><span>🚶 27 min</span><span>🚗 8 min</span><span>1.36 mi</span></div>
+      <div class="parking"><b>Parking:</b> Street, can be tight on weekends.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJEyTzR8K-woARV5lp-fOoATU" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://www.thegriddlecafe.com/menu" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="B">
+      <div class="rank">23</div>
+      <div class="meal-pills">
+        <span class="pill on">B</span><span class="pill">L</span><span class="pill">D</span>
+      </div>
+      <h3>Morning Kitchen</h3>
+      <p class="desc">Small, bright cafe — club sandwiches, crepes, fresh fruit sides.</p>
+      <div class="meta-row"><span>🚶 30 min</span><span>🚗 9 min</span><span>1.50 mi</span></div>
+      <div class="parking"><b>Parking:</b> Street parking.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJSxme65e_woAREqoW8GaoFtM" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://morningkitchenla.com/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="B">
+      <div class="rank">24</div>
+      <div class="meal-pills">
+        <span class="pill on">B</span><span class="pill">L</span><span class="pill">D</span>
+      </div>
+      <h3>Beachwood Cafe</h3>
+      <p class="desc">Charming Hollywood Hills spot with an actual view of the Hollywood Sign.</p>
+      <div class="meta-row"><span>🚶 32 min</span><span>🚗 9 min</span><span>1.62 mi</span></div>
+      <div class="parking"><b>Parking:</b> Limited street parking — arrive early.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJQfrAYG2_woAR_cxTsMpXoAM" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://www.beachwoodcafe.com/menus/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="B L">
+      <div class="rank">25</div>
+      <div class="meal-pills">
+        <span class="pill on">B</span><span class="pill on">L</span><span class="pill">D</span>
+      </div>
+      <h3>Farmer Boys</h3>
+      <p class="desc">Fast-food breakfast and burgers, opens at 6am.</p>
+      <div class="meta-row"><span>🚶 33 min</span><span>🚗 10 min</span><span>1.65 mi</span></div>
+      <div class="parking"><b>Parking:</b> Lot exists — read posted signs, has been known to ticket.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJ22lPDFC_woAR8b4_v6wWd3E" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://www.farmerboys.com/menu/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+    <div class="card" data-meals="L">
+      <div class="rank">26</div>
+      <div class="meal-pills">
+        <span class="pill">B</span><span class="pill on">L</span><span class="pill">D</span>
+      </div>
+      <h3>Hollywood Wraps & Grill</h3>
+      <p class="desc">Mediterranean wraps and salads, generous portions, friendly owner.</p>
+      <div class="meta-row"><span>🚶 46 min</span><span>🚗 12 min</span><span>2.30 mi</span></div>
+      <div class="parking"><b>Parking:</b> Street.</div>
+      <div class="link-row">
+        <a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJtR-yD4DBwoARFavWZoknjKU" target="_blank" rel="noopener">Maps</a>
+        <a class="link menu-link" href="https://hwgrill.com/menu/" target="_blank" rel="noopener">Menu</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p class="marquee-note">☆ Enjoy the trip ☆</p>
+  <p>Distances and times are approximate, based on straight-line distance from Loews Hollywood Hotel. Hours, parking, and menus can change — check each link before you head out.</p>
+</footer>
+
+<script>
+  const buttons = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.card');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      cards.forEach(card => {
+        const meals = card.dataset.meals.split(' ');
+        const show = f === 'all' || meals.includes(f);
+        card.classList.toggle('hidden', !show);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
